@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitDiscuss</title>
+  <link rel="icon" type="image/png" href="GitDiscuss.png">
+  <style>
+    /* 1. Set the background of the whole page to dark so it matches Giscus */
+    body {
+      background-color: #0d1117;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+
+    /* 2. Style the "Reddit Card" container */
+    .reddit-container {
+      width: 100%;
+      max-width: 850px; /* Keeps the feed at a comfortable, readable Reddit-style width */
+      background-color: #161b22; /* Slightly lighter dark background for contrast */
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+    }
+
+    /* 3. Style the Reddit Header */
+    .forum-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    /* Rounded avatar containing your logo */
+    .community-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      flex-shrink: 0;
+      border: 1px solid #30363d;
+    }
+
+    .community-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .forum-title {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #f0f6fc;
+      font-weight: 600;
+    }
+
+    .forum-subtitle {
+      margin: 4px 0 0 0;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+
+    /* 4. Dropdown Topic Selector Styling */
+    .topic-selector-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      background-color: #21262d;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+    }
+
+    .topic-label {
+      color: #8b949e;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .topic-dropdown {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #f0f6fc;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      flex-grow: 1;
+    }
+
+    .topic-dropdown:focus {
+      border-color: #58a6ff;
+    }
+
+    /* 5. Footer Buttons Styling */
+    .link-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+      border-top: 1px solid #30363d;
+      padding-top: 20px;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background-color: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #f0f6fc;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .link-button img {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- This is the card holding everything -->
+<div class="reddit-container">
+
+  <!-- Header -->
+  <div class="forum-header">
+    <div class="community-avatar">
+      <!-- Your custom brand image instead of 'r/' -->
+      <img src="GitDiscuss.png" alt="GitDiscuss Logo">
+    </div>
+    <div>
+      <h2 class="forum-title">GitDiscuss</h2>
+      <p class="forum-subtitle">Upvote, reply, and share your thoughts!</p>
+    </div>
+  </div>
+
+  <!-- Topic Switcher Dropdown -->
+  <div class="topic-selector-container">
+    <span class="topic-label">Filter Topic:</span>
+    <select id="topic-select" class="topic-dropdown">
+      <option value="general" selected>💬 General</option>
+      <option value="announcements">📢 Announcements</option>
+      <option value="qa">❓ Q&A</option>
+      <option value="ideas">💡 Ideas</option>
+      <option value="polls">📊 Polls</option>
+      <option value="showAndTell">🙌 Show and Tell</option>
+    </select>
+  </div>
+
+  <!-- Giscus will load inside this div -->
+  <div class="giscus"></div>
+
+  <!-- Link buttons -->
+  <div class="link-buttons">
+    <a class="link-button" href="https://github.com/giscus/giscus" target="_blank" rel="noopener noreferrer">
+      <img src="giscus.png" alt="Giscus">
+      <span>Giscus</span>
+    </a>
+    <a class="link-button" href="https://github.com/treatwashere/GitDiscuss" target="_blank" rel="noopener noreferrer">
+      <img src="GitDiscuss.png" alt="GitDiscuss">
+      <span>GitDiscuss</span>
+    </a>
+  </div>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- DYNAMIC GISCUS LOADER SCRIPT                            -->
+<!-- ======================================================= -->
+<script>
+  // 1. Map your Giscus Categories to their actual Category IDs on GitHub.
+  // Replace the placeholder IDs below with the IDs from your repository!
+  const categories = {
+    general: { name: "General", id: "DIC_kwDOTZeSG84DBQyA" }, // <-- Already configured!
+    announcements: { name: "Announcements", id: "DIC_kwDOTZeSG84DBQx-" },
+    qa: { name: "Q&A", id: "DIC_kwDOTZeSG84DBQyC" },
+    ideas: { name: "Ideas", id: "DIC_kwDOTZeSG84DBQyC" },
+    polls: { name: "Polls", id: "DIC_kwDOTZeSG84DBQyE" },
+    showAndTell: { name: "Show and Tell", id: "DIC_kwDOTZeSG84DBQyD" }
+  };
+
+  // 2. The core loading function
+  function loadGiscus(categoryKey) {
+    const categoryObj = categories[categoryKey];
+    if (!categoryObj) return;
+
+    const container = document.querySelector('.giscus');
+    container.innerHTML = ''; // Wipe out the previous iframe
+
+    // Build the script element from scratch
+    const script = document.createElement('script');
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute('data-repo', "treatwashere/GitDiscuss");
+    script.setAttribute('data-repo-id', "R_kgDOTZeSGw");
+    script.setAttribute('data-category', categoryObj.name);
+    script.setAttribute('data-category-id', categoryObj.id);
+    script.setAttribute('data-mapping', "pathname");
+    script.setAttribute('data-strict', "0");
+    script.setAttribute('data-reactions-enabled', "1");
+    script.setAttribute('data-emit-metadata', "0");
+    script.setAttribute('data-input-position', "bottom");
+    script.setAttribute('data-theme', "dark_tritanopia");
+    script.setAttribute('data-lang', "en");
+    script.setAttribute('crossorigin', "anonymous");
+    script.async = true;
+
+    // Inject into the page
+    container.appendChild(script);
+  }
+
+  // 3. Event Listener: Swapping when dropdown option changes
+  document.getElementById('topic-select').addEventListener('change', (e) => {
+    loadGiscus(e.target.value);
+  });
+
+  // 4. Load the default option (General) on initial page load
+  loadGiscus('general');
+</script>
+
+</body>
+</html>
