@@ -2,7 +2,7 @@
 
 A lightweight, self-hosted discussion board that turns GitHub Discussions into a Reddit-style community forum — no backend, no database, just a single static HTML page.
 
-🔗 **Live demo:** https://treatwashere.github.io/GitDiscuss/
+🔗 **Live demo:** https://gitdiscuss.github.io/GitDiscuss/
 
 ## Overview
 
