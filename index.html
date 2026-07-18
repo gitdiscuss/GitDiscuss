@@ -152,7 +152,6 @@
   <!-- Header -->
   <div class="forum-header">
     <div class="community-avatar">
-      <!-- Your custom brand image instead of 'r/' -->
       <img src="GitDiscuss.png" alt="GitDiscuss Logo">
     </div>
     <div>
@@ -168,7 +167,6 @@
       <option value="general" selected>💬 General</option>
       <option value="qa">❓ Q&A</option>
       <option value="ideas">💡 Ideas</option>
-      <option value="polls">📊 Polls</option>
       <option value="showAndTell">🙌 Show and Tell</option>
     </select>
   </div>
@@ -195,12 +193,11 @@
 <!-- ======================================================= -->
 <script>
   // 1. Map your Giscus Categories to their actual Category IDs on GitHub.
-  // Replace the placeholder IDs below with the IDs from your repository!
+  // REMINDER: Make sure to replace these placeholder IDs with the unique ones generated from giscus.app for your new personal account!
   const categories = {
-    general: { name: "General", id: "DIC_kwDOTZeSG84DBQyA" }, // <-- Already configured!
+    general: { name: "General", id: "DIC_kwDOTcYYmc4DBc_i" }, 
     qa: { name: "Q&A", id: "DIC_kwDOTcYYmc4DBc_j" },
     ideas: { name: "Ideas", id: "DIC_kwDOTcYYmc4DBc_k" },
-    polls: { name: "Polls", id: "DIC_kwDOTcYYmc4DBc_m" },
     showAndTell: { name: "Show and Tell", id: "DIC_kwDOTcYYmc4DBc_l" }
   };
 
@@ -215,8 +212,13 @@
     // Build the script element from scratch
     const script = document.createElement('script');
     script.src = "https://giscus.app/client.js";
-    script.setAttribute('data-repo', "treatwashere/GitDiscuss");
-    script.setAttribute('data-repo-id', "R_kgDOTZeSGw");
+    
+    // Points to your new personal account repo
+    script.setAttribute('data-repo', "gitdiscuss/GitDiscuss");
+    
+    // REMINDER: Switch this to your new repository's unique ID from giscus.app
+    script.setAttribute('data-repo-id', "R_kgDOTcYYmQ"); 
+    
     script.setAttribute('data-category', categoryObj.name);
     script.setAttribute('data-category-id', categoryObj.id);
     script.setAttribute('data-mapping', "pathname");
