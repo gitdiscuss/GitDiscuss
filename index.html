@@ -6,9 +6,40 @@
   <title>GitDiscuss</title>
   <link rel="icon" type="image/png" href="GitDiscuss.png">
   <style>
-    /* 1. Set the background of the whole page to dark so it matches Giscus */
+    /* ============================================================
+       THEME PALETTES — all colours live here as variables.
+       The toggle swaps between them. 🎨
+    ============================================================ */
+
+    /* ---- LIGHT (GitHub Light Tritanopia style) ---- */
+    :root {
+      --bg: #ffffff;
+      --card: #f6f8fa;
+      --panel: #eaeef2;
+      --input: #ffffff;
+      --border: #d0d7de;
+      --fg: #1f2328;
+      --muted: #59636e;
+      --accent: #0969da;
+      --shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+    }
+
+    /* ---- DARK (GitHub Dark Tritanopia) ---- */
+    html.dark {
+      --bg: #0d1117;
+      --card: #161b22;
+      --panel: #21262d;
+      --input: #0d1117;
+      --border: #30363d;
+      --fg: #f0f6fc;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 1. Page background follows the theme */
     body {
-      background-color: #0d1117;
+      background-color: var(--bg);
       margin: 0;
       padding: 40px 20px;
       display: flex;
@@ -17,31 +48,50 @@
       min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       box-sizing: border-box;
+      transition: background-color 0.25s;
     }
 
-    /* 2. Style the "Reddit Card" container */
+    /* Theme toggle button */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--fg);
+      z-index: 999;
+      line-height: 1;
+    }
+    .theme-toggle:hover { filter: brightness(1.1); }
+
+    /* 2. The "Reddit Card" container */
     .reddit-container {
       width: 100%;
-      max-width: 850px; /* Keeps the feed at a comfortable, readable Reddit-style width */
-      background-color: #161b22; /* Slightly lighter dark background for contrast */
-      border: 1px solid #30363d;
+      max-width: 850px;
+      background-color: var(--card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: var(--shadow);
       box-sizing: border-box;
+      transition: background-color 0.25s;
     }
 
-    /* 3. Style the Reddit Header */
+    /* 3. Header */
     .forum-header {
       display: flex;
       align-items: center;
       gap: 15px;
       margin-bottom: 20px;
       padding-bottom: 20px;
-      border-bottom: 1px solid #30363d;
+      border-bottom: 1px solid var(--border);
     }
 
-    /* Rounded avatar containing your logo */
     .community-avatar {
       width: 50px;
       height: 50px;
@@ -52,7 +102,7 @@
       justify-content: center;
       user-select: none;
       flex-shrink: 0;
-      border: 1px solid #30363d;
+      border: 1px solid var(--border);
     }
 
     .community-avatar img {
@@ -64,30 +114,30 @@
     .forum-title {
       margin: 0;
       font-size: 1.5rem;
-      color: #f0f6fc;
+      color: var(--fg);
       font-weight: 600;
     }
 
     .forum-subtitle {
       margin: 4px 0 0 0;
       font-size: 0.9rem;
-      color: #8b949e;
+      color: var(--muted);
     }
 
-    /* 4. Dropdown Topic Selector Styling */
+    /* 4. Dropdown Topic Selector */
     .topic-selector-container {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 25px;
-      background-color: #21262d;
+      background-color: var(--panel);
       padding: 10px 16px;
       border-radius: 8px;
-      border: 1px solid #30363d;
+      border: 1px solid var(--border);
     }
 
     .topic-label {
-      color: #8b949e;
+      color: var(--muted);
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -95,10 +145,10 @@
     }
 
     .topic-dropdown {
-      background-color: #0d1117;
-      border: 1px solid #30363d;
+      background-color: var(--input);
+      border: 1px solid var(--border);
       border-radius: 6px;
-      color: #f0f6fc;
+      color: var(--fg);
       padding: 6px 12px;
       font-size: 0.95rem;
       font-weight: 600;
@@ -109,17 +159,17 @@
     }
 
     .topic-dropdown:focus {
-      border-color: #58a6ff;
+      border-color: var(--accent);
     }
 
-    /* 5. Footer Buttons Styling */
+    /* 5. Footer Buttons */
     .link-buttons {
       display: flex;
       gap: 12px;
       margin-top: 25px;
       flex-wrap: wrap;
       justify-content: center;
-      border-top: 1px solid #30363d;
+      border-top: 1px solid var(--border);
       padding-top: 20px;
     }
 
@@ -128,10 +178,10 @@
       align-items: center;
       gap: 8px;
       padding: 10px 16px;
-      background-color: #21262d;
-      border: 1px solid #30363d;
+      background-color: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      color: #f0f6fc;
+      color: var(--fg);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
@@ -145,6 +195,8 @@
   </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="themeBtn" title="Switch theme">🌙</button>
 
 <!-- This is the card holding everything -->
 <div class="reddit-container">
@@ -189,6 +241,45 @@
 </div>
 
 <!-- ======================================================= -->
+<!-- THEME TOGGLE (with live Giscus theme switching!)        -->
+<!-- ======================================================= -->
+<script>
+  const themeBtn = document.getElementById("themeBtn");
+
+  /* which Giscus theme matches which page theme */
+  function giscusTheme() {
+    return document.documentElement.classList.contains("dark")
+      ? "dark_tritanopia"
+      : "light_tritanopia";
+  }
+
+  /* tell the already-loaded Giscus iframe to switch themes live */
+  function updateGiscusTheme() {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme() } } },
+      "https://giscus.app"
+    );
+  }
+
+  function setTheme(dark, save) {
+    document.documentElement.classList.toggle("dark", dark);
+    themeBtn.textContent = dark ? "☀️" : "🌙";
+    if (save) localStorage.setItem("gd-theme", dark ? "dark" : "light");
+    updateGiscusTheme();
+  }
+
+  /* saved choice first, otherwise match their device setting */
+  const savedTheme = localStorage.getItem("gd-theme");
+  if (savedTheme) setTheme(savedTheme === "dark", false);
+  else setTheme(matchMedia("(prefers-color-scheme: dark)").matches, false);
+
+  themeBtn.onclick = () =>
+    setTheme(!document.documentElement.classList.contains("dark"), true);
+</script>
+
+<!-- ======================================================= -->
 <!-- DYNAMIC GISCUS LOADER SCRIPT                            -->
 <!-- ======================================================= -->
 <script>
@@ -226,7 +317,7 @@
     script.setAttribute('data-reactions-enabled', "1");
     script.setAttribute('data-emit-metadata', "0");
     script.setAttribute('data-input-position', "bottom");
-    script.setAttribute('data-theme', "dark_tritanopia");
+    script.setAttribute('data-theme', giscusTheme());   // follows the toggle!
     script.setAttribute('data-lang', "en");
     script.setAttribute('crossorigin', "anonymous");
     script.async = true;
