@@ -3,43 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitDiscuss</title>
+  <title>GitDiscuss - Master Platform</title>
   <link rel="icon" type="image/png" href="GitDiscuss.png">
+
   <style>
-    /* ============================================================
-       THEME PALETTES — all colours live here as variables.
-       The toggle swaps between them. 🎨
-    ============================================================ */
-
-    /* ---- LIGHT (GitHub Light Tritanopia style) ---- */
-    :root {
-      --bg: #ffffff;
-      --card: #f6f8fa;
-      --panel: #eaeef2;
-      --input: #ffffff;
-      --border: #d0d7de;
-      --fg: #1f2328;
-      --muted: #59636e;
-      --accent: #0969da;
-      --shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
-    }
-
-    /* ---- DARK (GitHub Dark Tritanopia) ---- */
-    html.dark {
-      --bg: #0d1117;
-      --card: #161b22;
-      --panel: #21262d;
-      --input: #0d1117;
-      --border: #30363d;
-      --fg: #f0f6fc;
-      --muted: #8b949e;
-      --accent: #58a6ff;
-      --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    }
-
-    /* 1. Page background follows the theme */
+    /* Global Base Layout */
     body {
-      background-color: var(--bg);
+      background-color: #0d1117;
       margin: 0;
       padding: 40px 20px;
       display: flex;
@@ -48,48 +18,28 @@
       min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       box-sizing: border-box;
-      transition: background-color 0.25s;
     }
 
-    /* Theme toggle button */
-    .theme-toggle {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      width: 38px;
-      height: 38px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--fg);
-      z-index: 999;
-      line-height: 1;
-    }
-    .theme-toggle:hover { filter: brightness(1.1); }
-
-    /* 2. The "Reddit Card" container */
+    /* Reddit/GitHub Card UI Frame */
     .reddit-container {
       width: 100%;
       max-width: 850px;
-      background-color: var(--card);
-      border: 1px solid var(--border);
+      background-color: #161b22;
+      border: 1px solid #30363d;
       border-radius: 12px;
       padding: 24px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       box-sizing: border-box;
-      transition: background-color 0.25s;
     }
 
-    /* 3. Header */
+    /* Header Profile Layout */
     .forum-header {
       display: flex;
       align-items: center;
       gap: 15px;
       margin-bottom: 20px;
       padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #30363d;
     }
 
     .community-avatar {
@@ -102,7 +52,7 @@
       justify-content: center;
       user-select: none;
       flex-shrink: 0;
-      border: 1px solid var(--border);
+      border: 1px solid #30363d;
     }
 
     .community-avatar img {
@@ -114,42 +64,51 @@
     .forum-title {
       margin: 0;
       font-size: 1.5rem;
-      color: var(--fg);
+      color: #f0f6fc;
       font-weight: 600;
     }
 
     .forum-subtitle {
       margin: 4px 0 0 0;
       font-size: 0.9rem;
-      color: var(--muted);
+      color: #8b949e;
     }
 
-    /* 4. Dropdown Topic Selector */
-    .topic-selector-container {
+    /* Combined Selectors Row Layout */
+    .selectors-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 25px;
+      background-color: #21262d;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      flex-wrap: wrap;
+    }
+
+    .selector-group {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 25px;
-      background-color: var(--panel);
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      gap: 10px;
+      flex: 1;
+      min-width: 250px;
     }
 
-    .topic-label {
-      color: var(--muted);
+    .selector-label {
+      color: #8b949e;
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
-    .topic-dropdown {
-      background-color: var(--input);
-      border: 1px solid var(--border);
+    .master-dropdown {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
       border-radius: 6px;
-      color: var(--fg);
-      padding: 6px 12px;
+      color: #f0f6fc;
+      padding: 8px 12px;
       font-size: 0.95rem;
       font-weight: 600;
       outline: none;
@@ -158,18 +117,24 @@
       flex-grow: 1;
     }
 
-    .topic-dropdown:focus {
-      border-color: var(--accent);
+    .master-dropdown:focus {
+      border-color: #58a6ff;
     }
 
-    /* 5. Footer Buttons */
+    /* Universal Comment Wrapper Target */
+    #comment-target {
+      min-height: 250px;
+      color: #ffffff;
+    }
+
+    /* Footer Navigation Buttons */
     .link-buttons {
       display: flex;
       gap: 12px;
       margin-top: 25px;
       flex-wrap: wrap;
       justify-content: center;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid #30363d;
       padding-top: 20px;
     }
 
@@ -178,161 +143,248 @@
       align-items: center;
       gap: 8px;
       padding: 10px 16px;
-      background-color: var(--panel);
-      border: 1px solid var(--border);
+      background-color: #21262d;
+      border: 1px solid #30363d;
       border-radius: 8px;
-      color: var(--fg);
+      color: #f0f6fc;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
     }
 
-    .link-button img {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
+    /* ======================================================= */
+    /* INLINE DARK OVERRIDES (FOR GITALK / GITMENT / WALINE)   */
+    /* ======================================================= */
+    .gt-container .gt-comment-content, 
+    .gitment-comment-main {
+      background-color: #0d1117 !important;
+      border: 1px solid #30363d !important;
+    }
+    .gt-container .gt-no-comment, .gt-container .gt-comment-username, 
+    .gt-container .gt-user-name, .gt-container .gt-header-username, 
+    .gt-container .gt-comment-body, .gt-container .gt-comment-body *, 
+    .gt-container .gt-meta, .gt-container .gt-counts,
+    .gitment-comment-body, .gitment-editor-main textarea {
+      color: #ffffff !important;
+    }
+    .gt-container .gt-header-textarea, .gitment-editor-main textarea {
+      background-color: #0d1117 !important;
+      border: 1px solid #30363d !important;
+      color: #ffffff !important;
+    }
+    /* Waline Theme Color Refactoring Variables */
+    :root {
+      --waline-background: #161b22 !important;
+      --waline-white: #0d1117 !important;
+      --waline-text-color: #ffffff !important;
+      --waline-border-color: #30363d !important;
     }
   </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeBtn" title="Switch theme">🌙</button>
-
-<!-- This is the card holding everything -->
 <div class="reddit-container">
 
-  <!-- Header -->
+  <!-- Header Section -->
   <div class="forum-header">
     <div class="community-avatar">
       <img src="GitDiscuss.png" alt="GitDiscuss Logo">
     </div>
     <div>
-      <h2 class="forum-title">GitDiscuss</h2>
-      <p class="forum-subtitle">Upvote, reply, and share your thoughts!</p>
+      <h2 class="forum-title">GitDiscuss Hub</h2>
+      <p class="forum-subtitle">Configure your comment interface and select cross-origin filters instantly:</p>
     </div>
   </div>
 
-  <!-- Topic Switcher Dropdown -->
-  <div class="topic-selector-container">
-    <span class="topic-label">Filter Topic:</span>
-    <select id="topic-select" class="topic-dropdown">
-      <option value="general" selected>💬 General</option>
-      <option value="qa">❓ Q&A</option>
-      <option value="ideas">💡 Ideas</option>
-      <option value="showAndTell">🙌 Show and Tell</option>
-    </select>
+  <!-- Dual Control Selector Layout Panel -->
+  <div class="selectors-row">
+    <!-- Dropdown Control 1: Engine Switcher Backend Framework Configuration -->
+    <div class="selector-group">
+      <span class="selector-label">Engine:</span>
+      <select id="engine-select" class="master-dropdown">
+        <option value="utterances" selected>🐙 Utterances</option>
+        <option value="giscus">⚡ Giscus</option>
+        <option value="gitalk">💬 Gitalk</option>
+        <option value="twikoo">💚 Twikoo</option>
+        <option value="waline">🧱 Waline</option>
+        <option value="gitment">📜 Gitment</option>
+      </select>
+    </div>
+
+    <!-- Dropdown Control 2: Forum Context Category Filters -->
+    <div class="selector-group">
+      <span class="selector-label">Topic:</span>
+      <select id="topic-select" class="master-dropdown">
+        <option value="general" selected>💬 General</option>
+        <option value="qa">❓ Q&A</option>
+        <option value="ideas">💡 Ideas</option>
+        <option value="showAndTell">🙌 Show and Tell</option>
+      </select>
+    </div>
   </div>
 
-  <!-- Giscus will load inside this div -->
-  <div class="giscus"></div>
+  <!-- Universal Render Space Work Area Target Frame -->
+  <div id="comment-target"></div>
 
-  <!-- Link buttons -->
+  <!-- Footer Link Navigation Buttons -->
   <div class="link-buttons">
-    <a class="link-button" href="https://github.com/giscus/giscus" target="_blank" rel="noopener noreferrer">
-      <img src="giscus.png" alt="Giscus">
-      <span>Giscus</span>
-    </a>
-    <a class="link-button" href="https://github.com/gitdiscuss/GitDiscuss" target="_blank" rel="noopener noreferrer">
+    <a class="link-button" href="https://github.com/gitdiscuss" target="_blank" rel="noopener noreferrer">
       <img src="GitDiscuss.png" alt="GitDiscuss">
-      <span>GitDiscuss</span>
+      <span>GitDiscuss Core</span>
     </a>
   </div>
 
 </div>
 
 <!-- ======================================================= -->
-<!-- THEME TOGGLE (with live Giscus theme switching!)        -->
+<!-- ROUTER IMPLEMENTATION LOGIC ARCHITECTURE               -->
 <!-- ======================================================= -->
 <script>
-  const themeBtn = document.getElementById("themeBtn");
-
-  /* which Giscus theme matches which page theme */
-  function giscusTheme() {
-    return document.documentElement.classList.contains("dark")
-      ? "dark_tritanopia"
-      : "light_tritanopia";
+  // Helper dynamic resource handlers matching asset paths asynchronously
+  function loadCSS(url) {
+    if (document.querySelector(`link[href="${url}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
   }
 
-  /* tell the already-loaded Giscus iframe to switch themes live */
-  function updateGiscusTheme() {
-    const iframe = document.querySelector("iframe.giscus-frame");
-    if (!iframe) return;
-    iframe.contentWindow.postMessage(
-      { giscus: { setConfig: { theme: giscusTheme() } } },
-      "https://giscus.app"
-    );
-  }
-
-  function setTheme(dark, save) {
-    document.documentElement.classList.toggle("dark", dark);
-    themeBtn.textContent = dark ? "☀️" : "🌙";
-    if (save) localStorage.setItem("gd-theme", dark ? "dark" : "light");
-    updateGiscusTheme();
-  }
-
-  /* saved choice first, otherwise match their device setting */
-  const savedTheme = localStorage.getItem("gd-theme");
-  if (savedTheme) setTheme(savedTheme === "dark", false);
-  else setTheme(matchMedia("(prefers-color-scheme: dark)").matches, false);
-
-  themeBtn.onclick = () =>
-    setTheme(!document.documentElement.classList.contains("dark"), true);
-</script>
-
-<!-- ======================================================= -->
-<!-- DYNAMIC GISCUS LOADER SCRIPT                            -->
-<!-- ======================================================= -->
-<script>
-  // 1. Map your Giscus Categories to their actual Category IDs on GitHub.
-  // REMINDER: Make sure to replace these placeholder IDs with the unique ones generated from giscus.app for your new personal account!
-  const categories = {
-    general: { name: "General", id: "DIC_kwDOTcYYmc4DBc_i" }, 
-    qa: { name: "Q&A", id: "DIC_kwDOTcYYmc4DBc_j" },
-    ideas: { name: "Ideas", id: "DIC_kwDOTcYYmc4DBc_k" },
-    showAndTell: { name: "Show and Tell", id: "DIC_kwDOTcYYmc4DBc_l" }
-  };
-
-  // 2. The core loading function
-  function loadGiscus(categoryKey) {
-    const categoryObj = categories[categoryKey];
-    if (!categoryObj) return;
-
-    const container = document.querySelector('.giscus');
-    container.innerHTML = ''; // Wipe out the previous iframe
-
-    // Build the script element from scratch
+  function loadJS(url, callback) {
     const script = document.createElement('script');
-    script.src = "https://giscus.app/client.js";
-    
-    // Points to your new personal account repo
-    script.setAttribute('data-repo', "gitdiscuss/GitDiscuss");
-    
-    // REMINDER: Switch this to your new repository's unique ID from giscus.app
-    script.setAttribute('data-repo-id', "R_kgDOTcYYmQ"); 
-    
-    script.setAttribute('data-category', categoryObj.name);
-    script.setAttribute('data-category-id', categoryObj.id);
-    script.setAttribute('data-mapping', "pathname");
-    script.setAttribute('data-strict', "0");
-    script.setAttribute('data-reactions-enabled', "1");
-    script.setAttribute('data-emit-metadata', "0");
-    script.setAttribute('data-input-position', "bottom");
-    script.setAttribute('data-theme', giscusTheme());   // follows the toggle!
-    script.setAttribute('data-lang', "en");
-    script.setAttribute('crossorigin', "anonymous");
+    script.src = url;
     script.async = true;
-
-    // Inject into the page
-    container.appendChild(script);
+    script.onload = callback;
+    document.head.appendChild(script);
   }
 
-  // 3. Event Listener: Swapping when dropdown option changes
-  document.getElementById('topic-select').addEventListener('change', (e) => {
-    loadGiscus(e.target.value);
-  });
+  const targetBox = document.getElementById('comment-target');
+  const engineSelector = document.getElementById('engine-select');
+  const topicSelector = document.getElementById('topic-select');
 
-  // 4. Load the default option (General) on initial page load
-  loadGiscus('general');
+  // Unified Master Engine Router Logic
+  function executeCommentRouter(engineType, topicKey) {
+    targetBox.innerHTML = ''; // Safely drop previous node instances
+
+    // Short-form identifier parsing for thread keys matching framework rules under 45 chars
+    let computedPath = window.location.pathname;
+    if (computedPath.length > 25) {
+      computedPath = computedPath.substring(0, 25);
+    }
+    const uniqueIdString = `${computedPath}-${topicKey}`;
+
+    switch(engineType) {
+      
+      case 'utterances':
+        const utScript = document.createElement('script');
+        utScript.src = 'https://utteranc.es/client.js';
+        utScript.async = true;
+        utScript.crossOrigin = 'anonymous';
+        utScript.setAttribute('repo', 'gitdiscuss/GitDiscuss');
+        utScript.setAttribute('issue-term', 'GitDiscuss Topic: ' + topicKey); // Maps thread by topic
+        utScript.setAttribute('theme', 'github-dark');
+        targetBox.appendChild(utScript);
+        break;
+
+      case 'giscus':
+        const gsScript = document.createElement('script');
+        gsScript.src = 'https://giscus.app/client.js';
+        gsScript.async = true;
+        gsScript.crossOrigin = 'anonymous';
+        gsScript.setAttribute('data-repo', 'gitdiscuss/GitDiscuss');
+        gsScript.setAttribute('data-repo-id', 'R_kgDOTcYYmQ');
+        gsScript.setAttribute('data-category', 'General');
+        gsScript.setAttribute('data-category-id', 'DIC_kwDOTcYYmc4DBc_i');
+        gsScript.setAttribute('data-mapping', 'pathname');
+        gsScript.setAttribute('data-term', 'GitDiscuss Topic: ' + topicKey); // Dynamically routes by topic
+        gsScript.setAttribute('data-strict', '0');
+        gsScript.setAttribute('data-reactions-enabled', '1');
+        gsScript.setAttribute('data-emit-metadata', '0');
+        gsScript.setAttribute('data-input-position', 'bottom');
+        gsScript.setAttribute('data-theme', 'dark_tritanopia');
+        gsScript.setAttribute('data-lang', 'en');
+        targetBox.appendChild(gsScript);
+        break;
+
+      case 'gitalk':
+        loadCSS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css');
+        loadJS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.js', () => {
+          const wrapper = document.createElement('div');
+          wrapper.id = 'gitalk-inner-box';
+          targetBox.appendChild(wrapper);
+          
+          const gitalk = new Gitalk({
+            clientID: 'Ov23liBVujhCSsK2POnS',
+            clientSecret: 'e066432aef2146c1dc3dd6a2cdf1c3c4b0d5577b',
+            repo: 'gitdiscuss-gitalk',
+            owner: 'gitdiscuss',
+            admin: ['gitdiscuss'],
+            id: uniqueIdString,
+            labels: ['Gitalk', topicKey], // Tag issues by topic dynamically
+            distractionFreeMode: false
+          });
+          gitalk.render('gitalk-inner-box');
+        });
+        break;
+
+      case 'twikoo':
+        const twiWrapper = document.createElement('div');
+        twiWrapper.id = 'tcomment';
+        targetBox.appendChild(twiWrapper);
+        loadJS('https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js', () => {
+          twikoo.init({
+            envId: 'https://your-twikoo-cloudbase-id.example.com',
+            el: '#tcomment',
+            path: uniqueIdString // Keeps database entries scoped per topic
+          });
+        });
+        break;
+
+      case 'waline':
+        loadCSS('https://cdn.jsdelivr.net/npm/@waline/client@v2/dist/waline.css');
+        const walineWrapper = document.createElement('div');
+        walineWrapper.id = 'waline-inner';
+        targetBox.appendChild(walineWrapper);
+        loadJS('https://cdn.jsdelivr.net/npm/@waline/client@v2/dist/waline.js', () => {
+          Waline.init({
+            el: '#waline-inner',
+            serverURL: 'https://your-waline-server-url.example.com',
+            path: uniqueIdString // Scopes storage collections per topic
+          });
+        });
+        break;
+
+      case 'gitment':
+        loadCSS('https://imsun.github.io/gitment/style/default.css');
+        loadJS('https://imsun.github.io/gitment/dist/gitment.browser.js', () => {
+          const gitmentWrapper = document.createElement('div');
+          gitmentWrapper.id = 'gitment-inner';
+          targetBox.appendChild(gitmentWrapper);
+          
+          const gitment = new Gitment({
+            id: uniqueIdString,
+            owner: 'gitdiscuss',
+            repo: 'GitDiscuss',
+            oauth: {
+              client_id: 'Ov23liwIQx9u3pM9ho0I',
+              client_secret: '4e44a871c3156f46aa7ad78d297337ef39e71078',
+            },
+          });
+          gitment.render('gitment-inner');
+        });
+        break;
+    }
+  }
+
+  // Event handlers checking for switch updates
+  function triggerEngineReload() {
+    executeCommentRouter(engineSelector.value, topicSelector.value);
+  }
+
+  engineSelector.addEventListener('change', triggerEngineReload);
+  topicSelector.addEventListener('change', triggerEngineReload);
+
+  // Initialize workspace setup on document launch loop
+  triggerEngineReload();
 </script>
 
 </body>
