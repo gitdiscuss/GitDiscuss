@@ -125,31 +125,7 @@
     #comment-target {
       min-height: 250px;
       color: #ffffff;
-    }
-
-    /* Footer Navigation Buttons */
-    .link-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 25px;
-      flex-wrap: wrap;
-      justify-content: center;
-      border-top: 1px solid #30363d;
-      padding-top: 20px;
-    }
-
-    .link-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background-color: #21262d;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      color: #f0f6fc;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
+      margin-bottom: 10px;
     }
 
     /* ======================================================= */
@@ -226,14 +202,6 @@
   <!-- Universal Render Space Work Area Target Frame -->
   <div id="comment-target"></div>
 
-  <!-- Footer Link Navigation Buttons -->
-  <div class="link-buttons">
-    <a class="link-button" href="https://github.com/gitdiscuss" target="_blank" rel="noopener noreferrer">
-      <img src="GitDiscuss.png" alt="GitDiscuss">
-      <span>GitDiscuss Core</span>
-    </a>
-  </div>
-
 </div>
 
 <!-- ======================================================= -->
@@ -307,7 +275,8 @@
 
       case 'gitalk':
         loadCSS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css');
-        loadJS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.js', () => {
+        
+        const initGitalk = () => {
           const wrapper = document.createElement('div');
           wrapper.id = 'gitalk-inner-box';
           targetBox.appendChild(wrapper);
@@ -323,39 +292,59 @@
             distractionFreeMode: false
           });
           gitalk.render('gitalk-inner-box');
-        });
+        };
+
+        // Fixed: Verify if class constructor is already present globally to avoid dependency injection collisions
+        if (window.Gitalk) {
+          initGitalk();
+        } else {
+          loadJS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.js', initGitalk);
+        }
         break;
 
       case 'twikoo':
-        const twiWrapper = document.createElement('div');
-        twiWrapper.id = 'tcomment';
-        targetBox.appendChild(twiWrapper);
-        loadJS('https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js', () => {
+        const initTwikoo = () => {
+          const twiWrapper = document.createElement('div');
+          twiWrapper.id = 'tcomment';
+          targetBox.appendChild(twiWrapper);
           twikoo.init({
             envId: 'https://your-twikoo-cloudbase-id.example.com',
             el: '#tcomment',
             path: uniqueIdString // Keeps database entries scoped per topic
           });
-        });
+        };
+
+        // Fixed: Verify if Twikoo environment initialization controls are ready before evaluating load parameters
+        if (window.twikoo) {
+          initTwikoo();
+        } else {
+          loadJS('https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js', initTwikoo);
+        }
         break;
 
       case 'waline':
         loadCSS('https://cdn.jsdelivr.net/npm/@waline/client@v2/dist/waline.css');
-        const walineWrapper = document.createElement('div');
-        walineWrapper.id = 'waline-inner';
-        targetBox.appendChild(walineWrapper);
-        loadJS('https://cdn.jsdelivr.net/npm/@waline/client@v2/dist/waline.js', () => {
+        const initWaline = () => {
+          const walineWrapper = document.createElement('div');
+          walineWrapper.id = 'waline-inner';
+          targetBox.appendChild(walineWrapper);
           Waline.init({
             el: '#waline-inner',
             serverURL: 'https://your-waline-server-url.example.com',
             path: uniqueIdString // Scopes storage collections per topic
           });
-        });
+        };
+
+        if (window.Waline) {
+          initWaline();
+        } else {
+          loadJS('https://cdn.jsdelivr.net/npm/@waline/client@v2/dist/waline.js', initWaline);
+        }
         break;
 
       case 'gitment':
         loadCSS('https://imsun.github.io/gitment/style/default.css');
-        loadJS('https://imsun.github.io/gitment/dist/gitment.browser.js', () => {
+        const initGitment = () => {
           const gitmentWrapper = document.createElement('div');
           gitmentWrapper.id = 'gitment-inner';
           targetBox.appendChild(gitmentWrapper);
@@ -370,7 +359,13 @@
             },
           });
           gitment.render('gitment-inner');
-        });
+        };
+
+        if (window.Gitment) {
+          initGitment();
+        } else {
+          loadJS('https://imsun.github.io/gitment/dist/gitment.browser.js', initGitment);
+        }
         break;
     }
   }
