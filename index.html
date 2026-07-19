@@ -181,7 +181,6 @@
         <option value="utterances" selected>🐙 Utterances</option>
         <option value="giscus">⚡ Giscus</option>
         <option value="gitalk">💬 Gitalk</option>
-        <option value="twikoo">💚 Twikoo</option>
         <option value="waline">🧱 Waline</option>
         <option value="gitment">📜 Gitment</option>
       </select>
@@ -294,31 +293,11 @@
           gitalk.render('gitalk-inner-box');
         };
 
-        // Fixed: Verify if class constructor is already present globally to avoid dependency injection collisions
+        // Verify if class constructor is already present globally to avoid dependency injection collisions
         if (window.Gitalk) {
           initGitalk();
         } else {
           loadJS('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.js', initGitalk);
-        }
-        break;
-
-      case 'twikoo':
-        const initTwikoo = () => {
-          const twiWrapper = document.createElement('div');
-          twiWrapper.id = 'tcomment';
-          targetBox.appendChild(twiWrapper);
-          twikoo.init({
-            envId: 'https://your-twikoo-cloudbase-id.example.com',
-            el: '#tcomment',
-            path: uniqueIdString // Keeps database entries scoped per topic
-          });
-        };
-
-        // Fixed: Verify if Twikoo environment initialization controls are ready before evaluating load parameters
-        if (window.twikoo) {
-          initTwikoo();
-        } else {
-          loadJS('https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js', initTwikoo);
         }
         break;
 
